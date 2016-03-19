@@ -1,4 +1,4 @@
-package com.example.carrey.rxjavademo;
+package com.carrey.gank;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;

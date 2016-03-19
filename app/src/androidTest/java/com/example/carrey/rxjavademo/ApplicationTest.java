@@ -1,4 +1,4 @@
-package com.example.carrey.rxjavademo;
+package com.example.carrey.gank;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
