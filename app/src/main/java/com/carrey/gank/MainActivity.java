@@ -1,14 +1,24 @@
 package com.carrey.gank;
 
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.carrey.gank.module.Weather;
 import com.carrey.gank.module.databindingdemo.DataBindingBaseActivity;
 import com.carrey.gank.module.databindingdemo.domain.ObservabHomeInfo;
 import com.carrey.gank.module.databindingdemo.domain.PlainHomeInfo;
+import com.carrey.gank.network.GankAPI;
+
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,102 +28,94 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView( R.layout.activity_main);
-//
-//        dataBinding.setHomeInfo(new HomeInfo("commonFirst", "commonLast"));
-//        dataBinding.setObHomeInfo(observabHomeInfo);
-//        dataBinding.setPlainHomeInfo(plainHomeInfo);
-//        dataBinding.observable.setText("observable111");
-////        dataBinding.viewSub.setLayoutResource(R.layout.content_main);
-//        dataBinding.viewSub.setOnInflateListener(new ViewStub.OnInflateListener() {
-//            @Override
-//            public void onInflate(ViewStub viewStub, View view) {
-//                ContentMainBinding bind = DataBindingUtil.bind(view);
-//                HomeInfo info = new HomeInfo("", "123456");
-//                bind.recyclerView.setHasFixedSize(true);
-//                bind.recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-//                bind.recyclerView.setAdapter(new HomeAdapter());
-//                bind.setHome111(info);
-//                bind.setVariable(BR.homeInfo,info);
-//
-//            }
-//        });
-//        ((ViewStubProxy)dataBinding.viewSub).getViewStub().inflate();
-
-//        setContentView(R.layout.activity_main);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        setContentView(R.layout.activity_main);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//         Inflate the menu; this adds items to the action bar if it is present.
-//        return true;
-//    }
-//
     public void observable(View view) {
         startActivity(new Intent(this, DataBindingBaseActivity.class));
-//        observabHomeInfo.setFirstName(" observableFirstName");
-//        observabHomeInfo.setLastName(" observableLastName");
     }
 
     public void planHomeInfo(View view) {
-//        plainHomeInfo.firstName.set("planFirst");
-//        plainHomeInfo.lastName.set("planLast");
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.weather.com.cn/")
+//                .baseUrl("https://gank.io/data/")
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        GankAPI service = retrofit.create(GankAPI.class);
+
+
+        Observable<Weather> weather1 = service.getWeather1("101010100");
+        weather1.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(new Action0() {
+            @Override
+            public void call() {
+
+            }
+        })
+        .subscribe(new Action1<Weather>() {
+            @Override
+            public void call(Weather weather) {
+                System.out.println(weather.toString());
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
+
+//        Call<Weather> weather = service.getWeather("101010100");
+//        weather.enqueue(new Callback<Weather>() {
+//            @Override
+//            public void onResponse(Call<Weather> call, Response<Weather> response) {
+//                System.out.println(response.toString());
+//                System.out.println(response.body().toString());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Weather> call, Throwable t) {
+//
+//            }
+//
+//
+//        });
+//        Call fuli = service.getFuli("20", "1");
+
+//        fuli.enqueue(new Callback<HomeBean>() {
+//            @Override
+//            public void onResponse(Call<HomeBean> call, Response<HomeBean> response) {
+//                    System.out.println(response.errorBody());
+//                    System.out.println(response.code());
+//                    System.out.println(response.toString());
+//            }
+//
+//            @Override
+//            public void onFailure(Call call, Throwable t) {
+//
+//            }
+//        });
+
+//
+//        try {
+//            fuli.execute();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        fuli.enqueue(new Callback<String>() {
+//            @Override
+//            public void onResponse(Call<String> call, Response<String> response) {
+//
+//                System.out.println(response.toString());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<String> call, Throwable t) {
+//
+//            }
+//        });
+
     }
-
-//
-//    private  static class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
-//
-//        private List<HomeInfo> list;
-//        public HomeAdapter() {
-//            list =new ArrayList<>();
-//            for (int i = 0; i < 10; i ++) {
-//                HomeInfo homeInfo= new HomeInfo("xzz"+i, "ssssl");
-//                list.add(homeInfo);
-//            }
-//        }
-//
-//        @Override
-//        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_info,null));
-//        }
-//
-//        @Override
-//        public void onBindViewHolder(ViewHolder holder, int position) {
-//                    holder.bind(list.get(position));
-//        }
-//
-//
-//        @Override
-//        public int getItemCount() {
-//            return list.size();
-//        }
-//
-//
-//      public static class ViewHolder extends RecyclerView.ViewHolder{
-//
-//          private ItemHomeInfoBinding binding;
-//
-//            public ViewHolder(View itemView) {
-//                super(itemView);
-//
-//              binding= DataBindingUtil.bind(itemView);
-//            }
-//
-//          public void bind(HomeInfo info){
-//              binding.setHomeInfo(info);
-//          }
-//        }
-//    }
-
 }

@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="5dp"
-            android:text="@{homeInfo.FirstName}" />
+            android:text="@{homeInfo.FirstName,default='default0'}" />
 
 
         <TextView
@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="5dp"
-            android:text="@{obHomeInfo.firstName}" />
+            android:text="@{obHomeInfo.firstName,default='default0'}" />
 
         <TextView
             android:layout_width="match_parent"
