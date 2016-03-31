@@ -14,6 +14,20 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        release {
+            storeFile file('carrey.jks')
+            storePassword 'gankio'
+            keyAlias 'gankio'
+            keyPassword 'gankio'
+        }
+        debug {
+            storeFile file('carrey.jks')
+            storePassword 'gankio'
+            keyAlias 'gankio'
+            keyPassword 'gankio'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
