@@ -1,6 +1,7 @@
 package com.carrey.gank.network;
 
 import com.carrey.gank.DayInfo;
+import com.carrey.gank.SexGirl;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -28,8 +29,8 @@ public interface GankService {
      * //    每日数据： http://gank.io/api/day/年/月/日
      */
     @GET("data/{category}/{pageSize}/{pageCount}")
-    Observable<DayInfo> getCategoryData(@Path("category") String category, @Path("pageSize") String pageSize,
-                                        @Path("pageCount") String pageCount);
+    Observable<SexGirl> getCategoryData(@Path("category") String category, @Path("pageSize") String pageSize,
+                                        @Path("pageCount") int pageCount);
 
     /**
      * 获取每日数据

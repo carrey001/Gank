@@ -1,5 +1,6 @@
 package com.carrey.gank.network;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -30,8 +31,18 @@ public class RetrofitManager {
     private Retrofit build() {
         return new Retrofit.Builder()
                 .baseUrl(GankAPI.BaseUrl)
+                .client(getClient())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
+    private OkHttpClient getClient() {
+        return new OkHttpClient.Builder()
+//                .cache()
+//                .addInterceptor()
+//                .addNetworkInterceptor()
+//                .authenticator()
                 .build();
     }
 

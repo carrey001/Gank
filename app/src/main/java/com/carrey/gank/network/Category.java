@@ -13,7 +13,7 @@ public enum Category {
 
     //    福利|Android|iOS|休息视频|拓展资源|前端|all
 
-    String category;
+   public String category;
 
     Category(String cat) {
         category = cat;
